@@ -9,33 +9,31 @@ var
   PV1, PV2, PV3: float;
 
 begin
-  SetPlotWidth(1, 1);
-  SetPlotColor(1, clGreen);
-  SetPlotWidth(2, 2);
-  SetPlotColor(2, clGreen);
-  SetPlotWidth(3, 3);
-  SetPlotColor(3, clGreen);
-
   max72 := Highest(High,72);
   min72 := Lowest(Low,72);
   PV1 := ((max72-min72)*0.786+min72);
-
-  if (SempreVisivel) OR (Close > PV1) then
-  begin
-    Plot(PV1);
-  end;
-
   max305 := Highest(High,305);
   min305 := Lowest(Low,305);
   PV2 := ((max305-min305)*0.786+min305);
-                     
-  if (SempreVisivel) OR (Close > PV2) then
-  begin
-    Plot2(PV2);
-  end;
-
   max1292 := Highest(High,1292);
   min1292 := Lowest(Low,1292);
   PV3 := ((max1292-min1292)*0.786+min1292);
+
+  if (SempreVisivel) OR (Close > PV1) then
+  begin
+    SetPlotWidth(1, 1);
+    SetPlotColor(1, clGreen); 
+    Plot(PV1);
+  end;
+             
+  if (SempreVisivel) OR (Close > PV2) then
+  begin
+    SetPlotWidth(2, 2);
+    SetPlotColor(2, clGreen); 
+    Plot2(PV2);
+  end;
+
+  SetPlotWidth(3, 3);
+  SetPlotColor(3, clGreen);
   Plot3(PV3);
 end;
