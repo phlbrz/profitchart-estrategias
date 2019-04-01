@@ -1,0 +1,20 @@
+// Contribuição Danilo Recchia
+// PhiCube - Preço X Tempo
+input 
+  periodo(17);
+
+var
+  diff3, diff5 : Float;
+
+begin
+  diff3 := Highest( HIGH, 3) - Lowest( LOW, 3);
+  diff5 := Highest( HIGH, 5) - Lowest( LOW, 5);
+  if ((diff5 <= diff3) and (diff5[1] > diff3[1])) then
+    begin
+      BuyAtMarket;
+  end
+  else if ((diff5 > diff3) and (diff5[1] <= diff3[1])) then
+    begin
+      SellShortAtMarket;
+  end;
+end;
