@@ -35,15 +35,13 @@ begin
     begin
       SetPlotWidth(1, 1);
       SetPlotColor(1, clRed);
-      Plot( lf ); 
-    end;
-    
-    if ( currentPeriod = pcpv2 ) then
+    end
+    else if ( currentPeriod = pcpv2 ) then
     begin
       SetPlotWidth(1, 2);
       SetPlotColor(1, clRed);
-      Plot( lf ); 
     end;
+    Plot( lf );
   end;
 
   if ( FECHAMENTO > hf ) then
@@ -52,15 +50,13 @@ begin
     begin
       SetPlotWidth(2, 1);
       SetPlotColor(2, clGreen); 
-      Plot2( hf ); 
-    end;
-    
-    if ( currentPeriod = pcpv2 ) then
+    end 
+    else if ( currentPeriod = pcpv2 ) then
     begin      
       SetPlotWidth(2, 2);
       SetPlotColor(2, clGreen);
-      Plot2( hf ); 
-    end;  
+    end;
+    Plot2( hf );   
   end;
 
   // sempre exibe
