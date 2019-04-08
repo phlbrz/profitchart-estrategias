@@ -11,7 +11,7 @@ var
   bandaInf : Float;
   smmaMedia : Float;
   mima144 : Float;
-  //zone : Float;
+  zone : Float;
   hl : Float;
   ll : Float;
   dist : Float;
@@ -21,9 +21,51 @@ var
   cfl : Float;
   lf : Float;
   nIndex : Integer;
-  bandas : Integer;
   currentUpperBand : Integer;
   currentLowerBand : Integer;
+  testB : Integer;
+
+function  Banda(nIndex : Integer): Integer;
+
+begin
+  Result := 1;
+  if(nIndex = 0) then
+  begin
+    Result := 8;
+  end
+  else if(nIndex = 1) then
+  begin
+    Result := 17;
+  end   
+  else if(nIndex = 2) then
+  begin
+    Result := 34;
+  end
+  else if(nIndex = 3) then
+  begin
+    Result := 72;
+  end
+  else if(nIndex = 4) then
+  begin
+    Result := 144;
+  end
+  else if(nIndex = 5) then
+  begin
+    Result := 305;
+  end
+  else if(nIndex = 6) then
+  begin
+    Result := 610;
+  end
+  else if(nIndex = 7) then
+  begin
+    Result := 1292;
+  end
+  else if(nIndex = 8) then
+  begin
+    Result := 2584;
+  end;        
+end; 
 
 begin
   santo := SMMA(currentPeriod, CLOSE, true);
@@ -36,23 +78,15 @@ begin
   cfl  := hl-dist*0.618;    //Center Low Fibonacci line
   lf   := hl-dist*0.786;     //Lowest Fibonacci line 
   mima144 := MediaExp(144, CLOSE);
-  //zone := Phicube_PCPV_Flexivel(currentPeriod); // Está sendo usado?
-  bandas[0] := 8;
-  bandas[1] := 17;
-  bandas[2] := 34;
-  bandas[3] := 72;
-  bandas[4] := 144;
-  bandas[5] := 305;
-  bandas[6] := 610;
-  bandas[7] := 1292;
-  bandas[8] := 2584;
+  zone := Phicube_PCPV_Flexivel(currentPeriod); 
   nIndex := 0;
-  while ( currentUpperBand <= 0 ) do
+  while (currentUpperBand <= 0) do
   begin
-    if ( bandas[nIndex] > currentPeriod ) then
+    testB := Banda(nIndex);
+    if ( testB > currentPeriod ) then
     begin
-      currentUpperBand := bandas[nIndex];
-      currentLowerBand := bandas[nIndex+1];
+      currentUpperBand := Banda(nIndex);
+      currentLowerBand := Banda(nIndex+1);
     end;
     nIndex := nIndex + 1;
   end;
@@ -75,40 +109,45 @@ begin
   Plot4(smmaMedia);
 
   if ( FECHAMENTO >= mima144 ) then
+  begin
+    if ( santo > smmaMedia ) then
     begin
-      if ( santo > smmaMedia ) then
-      begin
-        SetPlotColor(1, clGreen);
-        SetPlotWidth(1, 5); 
-      end;
-      if ( FECHAMENTO <= lf ) then
-        begin
-          SetPlotColor(1, clYellow);
-          SetPlotWidth(1, 4);
-        end
-      else if ( FECHAMENTO <= cfh ) then
-        begin
-          SetPlotColor(1, clWhite);
-          SetPlotWidth(1, 2);
-        end;
-    end
-      else
-    begin
-      if ( santo < smmaMedia ) then
-      begin
-        SetPlotColor(1, clRed);
-        SetPlotWidth(1, 5); 
-      end; 
-      if ( ABERTURA >= hf ) then
-        begin
-          SetPlotColor(1, clYellow);
-          SetPlotWidth(1, 4);
-        end
-      else if ( FECHAMENTO >= cfl ) then
-        begin
-          SetPlotColor(1, clWhite);
-          SetPlotWidth(1, 2);
-        end;
+      SetPlotColor(1, clGreen);
+      SetPlotWidth(1, 5);
+      PaintBar(clGreen); 
     end;
-    
+    if ( FECHAMENTO <= lf ) then
+    begin
+      SetPlotColor(1, clYellow);
+      SetPlotWidth(1, 4);
+      PaintBar(clYellow);
+    end
+    else if ( FECHAMENTO <= cfh ) then
+    begin
+      SetPlotColor(1, clWhite);
+      SetPlotWidth(1, 2);
+      PaintBar(clWhite);
+    end;
+  end
+  else
+  begin
+    if ( santo < smmaMedia ) then
+    begin
+      SetPlotColor(1, clRed);
+      SetPlotWidth(1, 5);
+      PaintBar(clRed); 
+    end; 
+    if ( ABERTURA >= hf ) then
+    begin
+      SetPlotColor(1, clYellow);
+      SetPlotWidth(1, 4);
+      PaintBar(clYellow);
+    end
+    else if ( FECHAMENTO >= cfl ) then
+    begin
+      SetPlotColor(1, clWhite);
+      SetPlotWidth(1, 2);
+      PaintBar(clWhite);
+    end;
+  end;
 end;
